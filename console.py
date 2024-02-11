@@ -4,7 +4,7 @@
 from models import *
 import json
 import cmd
-import re 
+import re
 
 
 class HBNBCommand(cmd.Cmd):
@@ -12,7 +12,7 @@ class HBNBCommand(cmd.Cmd):
 
     prompt = "(hbnb)"
 
-    def do_EOF(self, line ):
+    def do_EOF(self, line):
         """Function handle end of file character (Ctrl+D)."""
 
         print()
@@ -26,8 +26,7 @@ class HBNBCommand(cmd.Cmd):
     def emptyline(self):
         """Function that does nothing on ENTER."""
 
-
-        pass 
+        pass
 
     def do_create(self, line):
         """Function that creates new instance of BaseModel."""
@@ -43,16 +42,12 @@ class HBNBCommand(cmd.Cmd):
             instance.save()
             print(instance.id)
 
-
             def do_show(self, line):
                 """Function that prints the string representation of an instance."""
 
                 if line == "" or line is None:
                     print("***class name missing**")
-
-
                 else:
-
                     words = line.split(' ' )
                     if words[0] not in storage.classes():
                         print("** class does not exist**")
@@ -66,7 +61,6 @@ class HBNBCommand(cmd.Cmd):
                             print("** no instance found **")
                         else:
                                 print(storage.all()[patt])
-
 
                                 def do_destroy(self, line):
                                     """Function that deletes an instance based on class name and id."""
@@ -102,37 +96,32 @@ class HBNBCommand(cmd.Cmd):
                                             new_list = [str(obj) for patt, obj in storage.all().items()
                                                     if type(obj).__name__ == words[0]]
                                             print(new_list)
-
-                                        else:
+                                    else:
                                             f_list = [str(obj) for patt, obj in storage.all().items()]
                                             print(f_list)
 
                                             def do_update(self, line):
                                                 """Function that updates an instance based on name and id"""
 
+                                                if line == "" or line is None:
+                                                    print("** class name missing **")
+                                                    return
 
-                            if line == "" or line is None:
-                                print("** class name missing **")
-                                return
+                                                regex = r'^(\S+)(?:\s(\S+)(?:\s(\S+)(?:\s((?:"[^"]*")|(?:(\S)+)))?)?)?'
+                                                match = re.search(regex, line)
+                                                cname = match.group(1)
+                                                uid = match.group(2)
+                                                attribute = match.group(3)
+                                                value = match.group(4)
 
+                                                if not match:
+                                                    print("**class name missing **")
 
-                            regex = r'^(\S+)(?:\s(\S+)(?:\s(\S+)(?:\s((?:"[^"]*")|(?:(\S)+)))?)?)?'
-                            match = re.search(regex, line)
-                            cname = match.group(1)
-                            uid = match.group(2)
-                            attribute = match.group(3)
-                            value = match.group(4)
+                                                elif cname not in storage.classes():
+                                                    print("** class does not exist **")
 
-
-                            if not match:
-                                print("**class name missing **")
-
-
-                            elif cname not in storage.classes():
-                                print("** class does not exist **")
-
-                            elif uid is None:
-                                print("** instance id missing **")
+                                                elif uid is None:
+                                                    print("** instance id missing **")
 
                             else:
                                 patt = "{}.{}".format(cname, uid)
