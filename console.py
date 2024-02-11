@@ -58,65 +58,57 @@ class HBNBCommand(cmd.Cmd):
                         print("** class does not exist**")
 
                     elif len(words) < 2:
-                        print("** instance id missing **"
+                        print("** instance id missing **")
 
-                                else:
-                                patt = "{}.{}".format(words[0], words[1])
-                                if patt not in storage.all():
-                                print("** no instance found **")
-
-                                else:
+                    else:
+                        patt = "{}.{}".format(words[0], words[1])
+                        if patt not in storage.all():
+                            print("** no instance found **")
+                        else:
                                 print(storage.all()[patt])
 
 
                                 def do_destroy(self, line):
-                                """Function that deletes an instance based on class name and id."""
+                                    """Function that deletes an instance based on class name and id."""
 
 
                                 if line == "" or line is None:
-                                print("** class name missing **")
-
+                                    print("** class name missing **")
                                 else:
-                                words = line.split(' ')
-                                if words[0] not in storage.classes():
-                                print("** class does not exist **")
+                                    words = line.split(' ')
+                                    if words[0] not in storage.classes():
+                                        print("** class does not exist **")
 
+                                    elif len(words) < 2:
+                                        print("** instance id missing **")
 
-                                elif len(words) < 2:
-                                print("** instance id missing **")
+                                    else:
+                                        patt = "{}.{}".format(words[0], words[1])
+                                        if patt not in storage.all():
+                                            print("** no instance found **")
 
-                                else:
-                                patt = "{}.{}".format(words[0], words[1])
-                                if patt not in storage.all():
-                                print("** no instance found **")
-                                else:
-                                del storage.all()[patt]
-                                storage.save()
-
+                                        else:
+                                            del storage.all()[patt]
+                                            storage.save()
 
                                 def do_all(self, line):
-                                """Function that prints all string representation of an instance."""
+                                    """Function that prints all string representation of an instance."""
 
+                                    if line != "":
+                                        words = line.split(' ')
+                                        if words[0] not in storage.classes():
+                                            print("** class does not exist **")
+                                        else:
+                                            new_list = [str(obj) for patt, obj in storage.all().items()
+                                                    if type(obj).__name__ == words[0]]
+                                            print(new_list)
 
-                                if line != "":
-                                words = line.split(' ')
-                                if words[0] not in storage.classes():
-                                print("** class does not exist **")
+                                        else:
+                                            f_list = [str(obj) for patt, obj in storage.all().items()]
+                                            print(f_list)
 
-                                else:
-                                new_list = [str(obj) for patt, obj in storage.all().items()
-                                    if type(obj).__name__ == words[0]]
-                                print(new_list)
-
-
-                    else:
-                        f_list = [str(obj) for patt, obj in storage.all().items()]
-                        print(f_list)
-
-
-
-                        def do_update(self, line):
-                            """Function that updates an instance based on name and id"""
+                                            def do_update(self, line):
+                                                """Function that updates an instance based on name and id"""
 
 
                             if line == "" or line is None:
